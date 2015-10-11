@@ -12,7 +12,7 @@ namespace SqlConnectionDialog
 		/// Ctor.
 		/// </summary>
 		/// <param name="execute">Action to execute.</param>
-		public Command(Action<object> execute) : this(null, execute)
+		public Command(Action<object> execute) : this(execute, null)
 		{
 		}
 
@@ -21,7 +21,7 @@ namespace SqlConnectionDialog
 		/// </summary>
 		/// <param name="canExecute">Can execute.</param>
 		/// <param name="execute">Action to execute.</param>
-		public Command(Predicate<object> canExecute, Action<object> execute)
+		public Command(Action<object> execute, Predicate<object> canExecute)
 		{
 			if (execute == null) throw new ArgumentNullException(nameof(execute));
 			this.canExecute = canExecute;
@@ -59,6 +59,14 @@ namespace SqlConnectionDialog
 			};
 
 			return true;
+		}
+
+		public void OnCanExecuteChanged()
+		{
+			if (CanExecuteChanged != null)
+			{
+				CanExecuteChanged(this, EventArgs.Empty);
+			}
 		}
 
 		public event EventHandler CanExecuteChanged;

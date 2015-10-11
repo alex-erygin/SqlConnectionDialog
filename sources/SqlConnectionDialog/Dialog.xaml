@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SqlConnectionDialog"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
@@ -80,11 +81,9 @@
                      TabIndex="0"
                      x:Name="ServerNameTextBox"
                      Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
-            <ComboBox SelectedItem="{Binding Authentication, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
-                      TabIndex="2"
+            <ComboBox SelectedItem="{Binding Authentication, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                      TabIndex="2" ItemsSource="{Binding AuthenticationModes}"
                       Grid.Row="2" Grid.Column="1" Style="{StaticResource ComboboxFieldStyle}">
-                <ComboBoxItem Content="Windows" IsSelected="True"/>
-                <ComboBoxItem Content="SQL server Authentication"/>
             </ComboBox>
             <TextBox Text="{Binding DatabaseName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
                      TabIndex="1"
@@ -105,13 +104,19 @@
             <StackPanel Orientation="Horizontal" Grid.Column="0" >
                 <Button Content="Test"
                         TabIndex="5"
+                        Command="{Binding TestCommand}"
+                        IsEnabled="{Binding IsValid}"
                         Style="{StaticResource ButtonStyle}"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="1" >
                 <Button Content="OK" IsDefault="True"
                         TabIndex="6"
+                        Command="{Binding OkCommand}"
+                        IsEnabled="{Binding IsValid}"
                         Style="{StaticResource ButtonStyle}"/>
                 <Button Content="Cancel" IsCancel="True"
+                        Command="{Binding CancelCommand}"
+                        IsEnabled="{Binding IsValid}"
                         TabIndex="7"
                         Margin="10,0,0,0" Style="{StaticResource ButtonStyle}"/>
             </StackPanel>
