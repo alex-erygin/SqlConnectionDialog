@@ -31,49 +31,50 @@ namespace SqlConnectionDialog
 
 		public string ServerName
 		{
-			get { return this.serverName; }
+			get { return serverName; }
 			set
 			{
-				this.serverName = value;
+				serverName = value;
 				OnPropertyChanged(IsValidPropertyName);
 			}
 		}
 
 		public string DatabaseName
 		{
-			get { return this.databaseName; }
+			get { return databaseName; }
 			set
 			{
-				this.databaseName = value;
-				this.OnPropertyChanged(this.IsValidPropertyName);
+				databaseName = value;
+				NotifyIsValid();
 			}
 		}
 
 		public string Authentication
 		{
-			get { return this.authentication; }
+			get { return authentication; }
 			set
 			{
-				this.authentication = value;
-				this.NotifyIsValid();
+				authentication = value;
+				NotifyIsValid();
 			}
 		}
 
 		public string UserName
 		{
-			get { return this.userName; }
+			get { return userName; }
 			set
 			{
-				this.userName = value;
-				this.OnPropertyChanged(this.IsValidPropertyName);
+				userName = value;
+				NotifyIsValid();
 			}
 		}
 
 		public string[] AuthenticationModes { get; } = {"Windows", "SQL server autentication"};
 
-		public bool IsValid => this.Validate();
+		public bool IsValid => Validate();
 
-		public bool IsCredentialInputEnabled => Authentication == "Windows";
+		public bool IsCredentialInputEnabled => Authentication == "SQL server autentication";
+	
 
 		public ICommand TestCommand { get; set; }
 
@@ -85,15 +86,15 @@ namespace SqlConnectionDialog
 		private void SetupControls()
 		{
 			ServerNameTextBox.Focus();
-			PasswordBox.PasswordChanged += (sender, args) => { this.OnPropertyChanged(IsValidPropertyName); };
+			PasswordBox.PasswordChanged += (sender, args) => { OnPropertyChanged(IsValidPropertyName); };
 			Authentication = "Windows";
 		}
 
 		private void InitCommands()
 		{
-			TestCommand = new Command(x => this.Test());
-			OkCommand = new Command(x => this.Ok());
-			CancelCommand = new Command(x => this.Cancel());
+			TestCommand = new Command(x => Test());
+			OkCommand = new Command(x => Ok());
+			CancelCommand = new Command(x => Cancel());
 		}
 
 		private void InitDataContext()
@@ -107,6 +108,7 @@ namespace SqlConnectionDialog
 
 		private void Cancel()
 		{
+			DialogResult = false;
 		}
 
 		private void Test()
@@ -115,8 +117,8 @@ namespace SqlConnectionDialog
 
 		private void NotifyIsValid()
 		{
-			this.OnPropertyChanged(this.IsValidPropertyName);
-			this.OnPropertyChanged("IsCredentialInputEnabled");
+			OnPropertyChanged(IsValidPropertyName);
+			OnPropertyChanged("IsCredentialInputEnabled");
 		}
 
 		private bool Validate()
@@ -129,7 +131,7 @@ namespace SqlConnectionDialog
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
-			this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

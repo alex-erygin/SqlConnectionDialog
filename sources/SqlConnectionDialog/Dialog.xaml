@@ -90,8 +90,10 @@
                      Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
             <TextBox Text="{Binding UserName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                      TabIndex="3"
+                     IsEnabled="{Binding IsCredentialInputEnabled}"
                      Grid.Row="3" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
             <PasswordBox x:Name="PasswordBox" 
+                         IsEnabled="{Binding IsCredentialInputEnabled}"
                          TabIndex="4"
                          Grid.Row="4" Grid.Column="1" Style="{StaticResource PasswordStyle}"/>
         </Grid>
@@ -116,7 +118,6 @@
                         Style="{StaticResource ButtonStyle}"/>
                 <Button Content="Cancel" IsCancel="True"
                         Command="{Binding CancelCommand}"
-                        IsEnabled="{Binding IsValid}"
                         TabIndex="7"
                         Margin="10,0,0,0" Style="{StaticResource ButtonStyle}"/>
             </StackPanel>
