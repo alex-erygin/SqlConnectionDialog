@@ -8,7 +8,8 @@
         WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
         mc:Ignorable="d"
-        Title="Database connection" Height="221" Width="360" Icon="icon.ico">
+        Title="Database connection" Height="221" Width="360" Icon="icon.ico"
+        d:DataContext="{d:DesignInstance d:Type={x:Type local:Dialog}}">
     <Window.Resources>
         <Style x:Key="LabelStyle" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -75,14 +76,25 @@
             <TextBlock Grid.Column="0" Grid.Row="3" Text="User name:" Style="{StaticResource LabelStyle}"/>
             <TextBlock Grid.Column="0" Grid.Row="4" Text="Password:" Style="{StaticResource LabelStyle}"/>
 
-            <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
-            <ComboBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ComboboxFieldStyle}">
+            <TextBox Text="{Binding ServerName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
+                     TabIndex="0"
+                     x:Name="ServerNameTextBox"
+                     Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
+            <ComboBox SelectedItem="{Binding Authentication, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
+                      TabIndex="2"
+                      Grid.Row="2" Grid.Column="1" Style="{StaticResource ComboboxFieldStyle}">
                 <ComboBoxItem Content="Windows" IsSelected="True"/>
                 <ComboBoxItem Content="SQL server Authentication"/>
             </ComboBox>
-            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
-            <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
-            <PasswordBox Grid.Row="4" Grid.Column="1" Style="{StaticResource PasswordStyle}"/>
+            <TextBox Text="{Binding DatabaseName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
+                     TabIndex="1"
+                     Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
+            <TextBox Text="{Binding UserName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                     TabIndex="3"
+                     Grid.Row="3" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
+            <PasswordBox x:Name="PasswordBox" 
+                         TabIndex="4"
+                         Grid.Row="4" Grid.Column="1" Style="{StaticResource PasswordStyle}"/>
         </Grid>
         <Separator VerticalAlignment="Top" Grid.Row="1"/>
         <Grid Grid.Row="2" Margin="0,10,0,3">
@@ -91,11 +103,17 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal" Grid.Column="0" >
-                <Button Content="Test" Style="{StaticResource ButtonStyle}"/>
+                <Button Content="Test"
+                        TabIndex="5"
+                        Style="{StaticResource ButtonStyle}"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="1" >
-                <Button Content="OK" Style="{StaticResource ButtonStyle}"/>
-                <Button Content="Cancel" Margin="10,0,0,0" Style="{StaticResource ButtonStyle}"/>
+                <Button Content="OK" IsDefault="True"
+                        TabIndex="6"
+                        Style="{StaticResource ButtonStyle}"/>
+                <Button Content="Cancel" IsCancel="True"
+                        TabIndex="7"
+                        Margin="10,0,0,0" Style="{StaticResource ButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Grid>
