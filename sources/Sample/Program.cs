@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using SqlConnectionDialog;
 
 namespace Sample
 {
@@ -10,8 +8,10 @@ namespace Sample
 		[STAThread]
 		static void Main(string[] args)
 		{
-			var dialog = new SqlConnectionDialog.Dialog();
-			dialog.ShowDialog();
+			var connectionStringConstructor = new ConnectionStringFactory();
+			var connectionString = connectionStringConstructor.BuildConnectionString();
+			Console.WriteLine(connectionString);
+			Console.ReadKey();
 		}
 	}
 }

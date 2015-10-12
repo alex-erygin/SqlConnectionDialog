@@ -9,7 +9,7 @@ namespace SqlConnectionDialog
 	/// <summary>
 	///     Sql connection window
 	/// </summary>
-	public partial class Dialog : INotifyPropertyChanged
+	internal partial class Dialog : INotifyPropertyChanged
 	{
 		private const string WindowsAuthentication = "Windows";
 		private const string SqlServerAutentication = "SQL server authentication";
@@ -21,10 +21,6 @@ namespace SqlConnectionDialog
 		private string serverName;
 		private string userName;
 
-
-		/// <summary>
-		///     Ctor.
-		/// </summary>
 		public Dialog()
 		{
 			InitializeComponent();
