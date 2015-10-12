@@ -1,8 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace SqlConnectionDialog
 {
@@ -90,6 +92,28 @@ namespace SqlConnectionDialog
 			ServerNameTextBox.Focus();
 			PasswordBox.PasswordChanged += (sender, args) => { OnPropertyChanged(IsValidPropertyName); };
 			Authentication = WindowsAuthentication;
+
+			IsVisibleChanged += (sender, args) =>
+			{
+				if (!IsVisible)
+				{
+					return;
+				}
+
+				//activate wpf window. see http://stackoverflow.com/questions/257587/bring-a-window-to-the-front-in-wpf
+				Activate();
+				Topmost = true;  // important
+				Topmost = false; // important
+				Focus();
+
+				//set focus on textbox. see http://stackoverflow.com/questions/13955340/keyboard-focus-does-not-work-on-text-box-in-wpf
+				Dispatcher.BeginInvoke(DispatcherPriority.Input,
+					new Action(() =>
+					{
+						ServerNameTextBox.Focus(); // Set Logical Focus
+						Keyboard.Focus(ServerNameTextBox); // Set Keyboard Focus
+					}));
+			};
 		}
 
 		private void InitCommands()
