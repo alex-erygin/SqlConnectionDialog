@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
+using System.Data.SqlClient;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 
 namespace SqlConnectionDialog
@@ -9,6 +11,8 @@ namespace SqlConnectionDialog
 	/// </summary>
 	public partial class Dialog : INotifyPropertyChanged
 	{
+		private const string WindowsAuthentication = "Windows";
+		private const string SqlServerAutentication = "SQL server authentication";
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		private readonly string IsValidPropertyName = "IsValid";
@@ -69,12 +73,14 @@ namespace SqlConnectionDialog
 			}
 		}
 
-		public string[] AuthenticationModes { get; } = {"Windows", "SQL server autentication"};
+		public string[] AuthenticationModes { get; } = {WindowsAuthentication, SqlServerAutentication};
 
 		public bool IsValid => Validate();
 
-		public bool IsCredentialInputEnabled => Authentication == "SQL server autentication";
-	
+		public bool IsCredentialInputEnabled => Authentication == SqlServerAutentication;
+
+		public string ConnectionString { get; private set; }
+
 
 		public ICommand TestCommand { get; set; }
 
@@ -87,7 +93,7 @@ namespace SqlConnectionDialog
 		{
 			ServerNameTextBox.Focus();
 			PasswordBox.PasswordChanged += (sender, args) => { OnPropertyChanged(IsValidPropertyName); };
-			Authentication = "Windows";
+			Authentication = WindowsAuthentication;
 		}
 
 		private void InitCommands()
@@ -104,6 +110,8 @@ namespace SqlConnectionDialog
 
 		private void Ok()
 		{
+			ConnectionString = this.BuildConnectionString();
+			DialogResult = true;
 		}
 
 		private void Cancel()
@@ -113,6 +121,42 @@ namespace SqlConnectionDialog
 
 		private void Test()
 		{
+			bool success = true;
+			
+			try
+			{
+				using (var connection = new SqlConnection(this.BuildConnectionString()))
+				{
+					connection.Open();
+					connection.Close();
+				}
+			}
+			catch
+			{
+				success = false;
+			}
+
+			MessageBox.Show(this, success ? "Connection succeeded" : "Connection failed");
+		}
+
+		private string BuildConnectionString()
+		{
+			var builder = new SqlConnectionStringBuilder
+			{
+				["Data Source"] = this.ServerName,
+				["Initial Catalog"] = this.DatabaseName
+			};
+
+			if (Authentication == WindowsAuthentication)
+			{
+				builder["Integrated Security"] = true;
+			}
+			else
+			{
+				builder["User Id"] = this.UserName;
+				builder["Password"] = this.PasswordBox.Password;
+			}
+			return builder.ConnectionString;
 		}
 
 		private void NotifyIsValid()
@@ -125,8 +169,8 @@ namespace SqlConnectionDialog
 		{
 			return !string.IsNullOrEmpty(DatabaseName)
 			       && !string.IsNullOrEmpty(ServerName)
-			       && ((Authentication == "Windows" ||
-			            (Authentication == "SQL server autentication" && !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(PasswordBox.Password))));
+			       && ((Authentication == WindowsAuthentication ||
+			            (Authentication == SqlServerAutentication && !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(PasswordBox.Password))));
 		}
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

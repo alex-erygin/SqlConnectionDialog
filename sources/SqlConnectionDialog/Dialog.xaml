@@ -9,7 +9,7 @@
         WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
         mc:Ignorable="d"
-        Title="Database connection" Height="221" Width="360" Icon="icon.ico"
+        Title="Database connection" Height="227" Width="360" Icon="icon.ico"
         d:DataContext="{d:DesignInstance d:Type={x:Type local:Dialog}}">
     <Window.Resources>
         <Style x:Key="LabelStyle" TargetType="TextBlock">
