@@ -4,7 +4,7 @@
     <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
 
     <PropertyGroup>
-        <ProductInfo>SQL connection factory</ProductInfo>
+        <ProductInfo>SQL connection string factory</ProductInfo>
         <CompanyInfo>Aleksandr Erygin</CompanyInfo>
         <CopyrightInfo>Copyright 2015 Aleksandr Erygin.</CopyrightInfo>
         <TradeMarkInfo>Aleksandr Erygin</TradeMarkInfo>

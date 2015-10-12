@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SQLConnectionStringUI</id>
+    <version>$version$</version>
+    <authors>Aleksandr Erygin</authors>
+    <owners>Aleksandr Erygin</owners>
+    <projectUrl>https://github.com/alex-erygin/SqlConnectionDialog</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Provides UI for SQL server connection string configuration.</description>
+    <releaseNotes>First version.</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>SQL Connection</tags>
+  </metadata>
+</package>
