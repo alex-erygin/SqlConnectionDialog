@@ -8,8 +8,8 @@ namespace Sample
 		[STAThread]
 		static void Main(string[] args)
 		{
-			var connectionStringConstructor = new ConnectionStringFactory();
-			var connectionString = connectionStringConstructor.BuildConnectionString();
+			var factory = new ConnectionStringFactory();
+			var connectionString = factory.BuildConnectionString();
 			Console.WriteLine(connectionString);
 			Console.ReadKey();
 		}
