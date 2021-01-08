@@ -17,7 +17,7 @@ namespace SqlConnectionDialog
 		private const string SqlServerAutentication = "SQL server authentication";
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		private readonly string IsValidPropertyName = "IsValid";
+        private readonly string IsValidPropertyName = "IsValid";
 		private string authentication;
 		private string databaseName;
 		private string serverName;
@@ -197,5 +197,24 @@ namespace SqlConnectionDialog
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
-	}
+
+        internal static bool TestConnection(string conn)
+        {
+            bool success = true;
+
+            try
+            {
+                using (var connection = new SqlConnection(conn))
+                {
+                    connection.Open();
+                    connection.Close();
+                }
+            }
+            catch
+            {
+                success = false;
+            }
+            return success;
+        }
+    }
 }
